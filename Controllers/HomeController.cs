@@ -1,5 +1,6 @@
 ﻿using FootballersCatalogue.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,10 +15,12 @@ namespace FootballersCatalogue.Controllers
     public class HomeController : Controller
     {
         CatalogueContext db;
+        IHubContext<IndexHub> hub;
 
-        public HomeController(CatalogueContext context)
+        public HomeController(CatalogueContext context, IHubContext<IndexHub> hubContext)
         {
             db = context;
+            hub = hubContext;
         }
 
         [HttpGet]
@@ -37,7 +40,7 @@ namespace FootballersCatalogue.Controllers
 
         [HttpPost]
         [ActionName("Register")]
-        public IActionResult AddNewPlayer(Player player)
+        public async Task<IActionResult> AddNewPlayer(Player player)
         {
             Debug.WriteLine("Register post");
 
@@ -54,6 +57,7 @@ namespace FootballersCatalogue.Controllers
             db.Players.Add(player);
 
             db.SaveChanges();
+            await hub.Clients.All.SendAsync("RefreshTable", db.Players.ToList());
             return RedirectToAction("Index");
         }
 
@@ -78,6 +82,7 @@ namespace FootballersCatalogue.Controllers
                 {
                     db.Players.Remove(player);
                     await db.SaveChangesAsync();
+                    await hub.Clients.All.SendAsync("RefreshTable", db.Players.ToList());
                     return RedirectToAction("Index");
                 }
             }
@@ -107,21 +112,31 @@ namespace FootballersCatalogue.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Player player)
         {
-            Debug.WriteLine("Register post");
+            var playerTeam = db.Teams.Where(team => team.TeamId.Equals(player.TeamId)).FirstOrDefault();
 
-            if (!db.Teams.Where(team => team.Name.Equals(player.TeamName)).Any())
+            if (player.TeamName != null)
             {
-                Debug.WriteLine("Created team");
-                db.Teams.Add(new Team(player.TeamName));
-                db.SaveChanges();
+                if (db.Teams.Where(team => team.Name.Equals(player.TeamName)).Any())
+                {
+                    playerTeam = db.Teams.Where(team => team.Name.Equals(player.TeamName)).FirstOrDefault();
+                    player.TeamId = playerTeam.TeamId;
+                }                  
+                else
+                {
+                    db.Teams.Add(new Team(player.TeamName));
+                    db.SaveChanges();
+                    playerTeam = db.Teams.Where(team => team.Name.Equals(player.TeamName)).FirstOrDefault();
+                    player.TeamId = playerTeam.TeamId;
+                }             
             }
+            else
+                player.TeamName = playerTeam.Name;
 
-            var playerTeam = db.Teams.Where(team => team.Name.Equals(player.TeamName)).FirstOrDefault();
-            player.TeamId = playerTeam.TeamId;
             player.Team = playerTeam;
 
             db.Players.Update(player);
             await db.SaveChangesAsync();
+            await hub.Clients.All.SendAsync("RefreshTable", db.Players.ToList());
             return RedirectToAction("Index");
         }
 

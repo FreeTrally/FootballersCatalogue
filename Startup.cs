@@ -27,7 +27,8 @@ namespace FootballersCatalogue
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<CatalogueContext>(options => options.UseSqlServer(connection));
-            services.AddControllersWithViews();
+            services.AddSignalR();
+            services.AddControllersWithViews();            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +53,7 @@ namespace FootballersCatalogue
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<IndexHub>("/indexhub");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Register}/{id?}");

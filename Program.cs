@@ -23,7 +23,6 @@ namespace FootballersCatalogue
                 try
                 {
                     var context = services.GetRequiredService<CatalogueContext>();
-                    SampleData.Initialize(context);
                 }
                 catch (Exception ex)
                 {

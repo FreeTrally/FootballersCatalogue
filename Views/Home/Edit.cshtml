@@ -28,15 +28,15 @@
     </div>
     <div class="form-group">
         <label asp-for="TeamName" class="control-label">Команда</label>
-        <input class="form-control" name="TeamName" list="datalistOptions" required autocomplete="off">
+        <input class="form-control" name="TeamName" list="datalistOptions" placeholder="@Model.TeamName" autocomplete="off">
         @await Html.PartialAsync("_GetTeamsDatalist", teams)
     </div>
     <div class="form-group">
         <label asp-for="Country" class="control-label">Страна</label>
         <select name="Country" asp-for="Country" class="form-control" required>
-            <option value="Russia">Россия</option>
-            <option value="USA">США</option>
-            <option value="Italy">Италия</option>
+            <option value="Russia">Russia</option>
+            <option value="USA">USA</option>
+            <option value="Italy">Italy</option>
         </select>
     </div>
     <div class="form-group">

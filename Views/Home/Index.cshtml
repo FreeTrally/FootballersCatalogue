@@ -2,8 +2,8 @@
 @{
     ViewData["Title"] = "Футболисты";
 }
-<h3>Смартфоны</h3>
-<table class="table-condensed">
+<h3>Легионеры</h3>
+<table class="table-condensed" id="index-content">
     <tr>
         <td>Имя</td>
         <td>Фамилия</td>
@@ -13,20 +13,52 @@
         <td>Страна</td>
         <td></td>
         <td></td>
-        <td></td>
     </tr>
     @foreach (var player in Model)
     {
-<tr>
-    <td>@player.Name</td>
-    <td>@player.Surname</td>
-    <td>@player.Gender</td>
-    <td>@player.BirthDate</td>
-    <td>@player.TeamName</td>
-    <td>@player.Country</td>
-    <td></td>
-    <td><a href="~/Home/Edit/@player.Id">Редактировать</a></td>
-    <td><a href="~/Home/Delete/@player.Id">Удалить</a></td>
-</tr>
+        <tr>
+            <td>@player.Name</td>
+            <td>@player.Surname</td>
+            <td>@player.Gender</td>
+            <td>@player.BirthDate</td>
+            <td>@player.TeamName</td>
+            <td>@player.Country</td>
+            <td><a href="~/Home/Edit/@player.Id">Редактировать</a></td>
+            <td><a href="~/Home/Delete/@player.Id">Удалить</a></td>
+        </tr>
     }
 </table>
+
+<script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+<script>
+    console.log("script");
+    const hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl("/indexhub")
+        .build();
+
+    hubConnection.on('RefreshTable', function (players) {
+        document.getElementById("index-content").innerHTML = `<tr>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Пол</td>
+        <td>Дата рождения</td>
+        <td>Команда</td>
+        <td>Страна</td>
+        <td></td>
+        <td></td>
+    </tr>`;
+        for (let i = 0; i < players.length; i++) {
+            document.getElementById("index-content").innerHTML += `<tr>
+                <td>` + players[i].name + `</td>
+                <td>` + players[i].surname + `</td>
+                <td>` + players[i].gender + `</td>
+                <td>` + players[i].birthDate + `</td>
+                <td>` + players[i].teamName + `</td>
+                <td>` + players[i].country + `</td>
+                <td><a href="Edit/` + players[i].id + `">Редактировать</a></td>
+                <td><a href="Delete/` + players[i].id + `">Удалить</a></td></tr>`;
+        }
+    });
+    hubConnection.start();
+</script>
+@*https://localhost:44382/Home/~/Home/Delete/8*@
