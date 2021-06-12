@@ -26,7 +26,6 @@ namespace FootballersCatalogue.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            Debug.WriteLine("Index");
             return View(db.Players.ToList());
         }
 
@@ -34,7 +33,6 @@ namespace FootballersCatalogue.Controllers
         [ActionName("Register")]
         public IActionResult AddNewPlayer()
         {
-            Debug.WriteLine("Register");
             return View(db.Teams.ToList());
         }
 
@@ -42,11 +40,8 @@ namespace FootballersCatalogue.Controllers
         [ActionName("Register")]
         public async Task<IActionResult> AddNewPlayer(Player player)
         {
-            Debug.WriteLine("Register post");
-
             if (!db.Teams.Where(team => team.Name.Equals(player.TeamName)).Any())
             {
-                Debug.WriteLine("Created team");
                 db.Teams.Add(new Team(player.TeamName));
                 db.SaveChanges();
             }
@@ -64,9 +59,6 @@ namespace FootballersCatalogue.Controllers
         [HttpGet]
         public IActionResult Delete(int? id)
         {
-            Debug.WriteLine("Delete");
-            Debug.WriteLine(id);
-
             ViewBag.PlayerId = id;
             return View(db.Players.FirstOrDefault(p => p.Id == id));
         }
@@ -92,13 +84,9 @@ namespace FootballersCatalogue.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            Debug.WriteLine("Edit");
-            Debug.WriteLine(id);
-
             if (id != null)
             {
                 ViewData["Teams"] = db.Teams.ToList();
-                Debug.WriteLine(db.Teams.ToList().Count);
                 var player = await db.Players.FirstOrDefaultAsync(p => p.Id == id);
                 if (player != null)
                 {
@@ -143,14 +131,12 @@ namespace FootballersCatalogue.Controllers
         [HttpGet]
         public IActionResult GetTeamsDatalist()
         {
-            Debug.WriteLine("GetTeamsDatalist");
             return PartialView(db.Teams.ToList());
         }
 
         [HttpGet]
         public IActionResult GetTeamName()
         {
-            Debug.WriteLine("GetTeamName");
             return PartialView();
         }
     }
