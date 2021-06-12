@@ -68,8 +68,8 @@ C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\Footbal
 C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\ref\FootballersCatalogue.dll
 C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\FootballersCatalogue.pdb
 C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\FootballersCatalogue.genruntimeconfig.cache
-C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\Razor\Views\Home\Buy.cshtml.g.cs
-C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\Razor\Views\Home\Orders.cshtml.g.cs
 C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\Razor\Views\Home\Delete.cshtml.g.cs
 C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\Razor\Views\Home\Edit.cshtml.g.cs
 C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\Razor\Views\Home\_GetTeamsDatalist.cshtml.g.cs
+C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\Razor\Views\Home\Register.cshtml.g.cs
+C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\Razor\Views\Home\_GetTeamName.cshtml.g.cs

@@ -1,10 +1,9 @@
-﻿@model IEnumerable<string>
+﻿@model IEnumerable<FootballersCatalogue.Models.Team>
 <datalist id="datalistOptions">
-    @foreach (var contactPhone in Model)
+    @foreach (var team in Model)
     {
-        <option value="@contactPhone"></option>
+        <option value="@team.Name">@team.Name</option>
     }
-
 </datalist>
 
 

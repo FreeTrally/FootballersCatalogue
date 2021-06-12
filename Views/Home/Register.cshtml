@@ -1,0 +1,58 @@
+﻿@model IEnumerable<FootballersCatalogue.Models.Team>
+@{
+    ViewData["Title"] = "Регистрация футболиста";
+}
+<h2>Форма регистрации</h2>
+
+<form method="post" class="form-horizontal" role="form">
+    <p>Заполните следующие поля:</p>
+    <div class="form-group">
+        <label for="Name" class="col-md-2 control-label">Имя:</label>
+        <div class="col-md-4">
+            <input type="text" name="Name" class="form-control" required autocomplete="off" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Surname" class="col-md-2 control-label">Фамилия:</label>
+        <div class="col-md-4">
+            <input type="text" name="Surname" class="form-control" required autocomplete="off" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Gender" class="col-md-2 control-label">Пол:</label>
+        <div class="col-md-4">
+            <select name="Gender" class="form-select" required>
+                <option selected value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="BirthDate" class="col-md-2 control-label">Дата рождения:</label>
+        <div class="col-md-4">
+            <input type="date" name="BirthDate" class="form-control" required />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Команда:</label>
+        <div class="col-md-4">
+            <input class="form-control" name="TeamName" list="datalistOptions" required autocomplete="off">
+            @await Html.PartialAsync("_GetTeamsDatalist", Model)
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Country" class="col-md-2 control-label">Страна:</label>
+        <div class="col-md-4">
+            <select name="Country" class="form-select" required>
+                <option selected value="Russia">Россия</option>
+                <option value="USA">США</option>
+                <option value="Italy">Италия</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Зарегистрировать" />
+        </div>
+    </div>
+</form>

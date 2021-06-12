@@ -1,22 +1,32 @@
-﻿@model IEnumerable<FootballersCatalogue.Models.Phone>
+﻿@model IEnumerable<FootballersCatalogue.Models.Player>
 @{
-    ViewData["Title"] = "Каталог товаров";
+    ViewData["Title"] = "Футболисты";
 }
 <h3>Смартфоны</h3>
 <table class="table-condensed">
     <tr>
-        <td>Модель</td>
-        <td>Производитель</td>
-        <td>Цена</td>
+        <td>Имя</td>
+        <td>Фамилия</td>
+        <td>Пол</td>
+        <td>Дата рождения</td>
+        <td>Команда</td>
+        <td>Страна</td>
+        <td></td>
+        <td></td>
         <td></td>
     </tr>
-    @foreach (var phone in Model)
+    @foreach (var player in Model)
     {
-        <tr>
-            <td>@phone.Name</td>
-            <td>@phone.Company</td>
-            <td>@phone.Price</td>
-            <td><a href="~/Home/Buy/@phone.Id">Купить</a></td>
-        </tr>
+<tr>
+    <td>@player.Name</td>
+    <td>@player.Surname</td>
+    <td>@player.Gender</td>
+    <td>@player.BirthDate</td>
+    <td>@player.TeamName</td>
+    <td>@player.Country</td>
+    <td></td>
+    <td><a href="~/Home/Edit/@player.Id">Редактировать</a></td>
+    <td><a href="~/Home/Delete/@player.Id">Удалить</a></td>
+</tr>
     }
 </table>

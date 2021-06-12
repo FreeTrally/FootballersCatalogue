@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,60 +20,65 @@ namespace FootballersCatalogue.Controllers
             db = context;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            return View(db.Phones.ToList());
+            Debug.WriteLine("Index");
+            return View(db.Players.ToList());
         }
 
         [HttpGet]
-        public IActionResult Buy(int? id)
+        [ActionName("Register")]
+        public IActionResult AddNewPlayer()
         {
-            if (id == null) return RedirectToAction("Index");
-            ViewBag.PhoneId = id;
-            return View(db.Orders.Select(order => order.ContactPhone).Distinct().ToList());
+            Debug.WriteLine("Register");
+            return View(db.Teams.ToList());
         }
 
         [HttpPost]
-        public IActionResult Buy(Order order)
+        [ActionName("Register")]
+        public IActionResult AddNewPlayer(Player player)
         {
-            db.Orders.Add(order);
-            // сохраняем в бд все изменения
-            db.SaveChanges();
-            return RedirectToAction("Orders");
-        }
+            Debug.WriteLine("Register post");
 
-        [HttpGet]
-        public IActionResult Orders()
-        {
-            return View(db.Orders.ToList());
+            if (!db.Teams.Where(team => team.Name.Equals(player.TeamName)).Any())
+            {
+                Debug.WriteLine("Created team");
+                db.Teams.Add(new Team(player.TeamName));
+                db.SaveChanges();
+            }
+                
+            var playerTeam = db.Teams.Where(team => team.Name.Equals(player.TeamName)).FirstOrDefault();
+            player.TeamId = playerTeam.TeamId;
+            player.Team = playerTeam;
+            db.Players.Add(player);
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult Delete(int? id)
-        {           
-            //if (orderId != null)
-            //{
-            //    var order = await db.Orders.FirstOrDefaultAsync(p => p.OrderId == orderId);
-            //    if (order != null)
-            //        return View(order);
-            //}
-            //if (id == null) return RedirectToAction("Orders");
-            ViewBag.OrderId = id;
-            return View(db.Orders.FirstOrDefault(p => p.OrderId == id));
+        {
+            Debug.WriteLine("Delete");
+            Debug.WriteLine(id);
+
+            ViewBag.PlayerId = id;
+            return View(db.Players.FirstOrDefault(p => p.Id == id));
         }
 
         [HttpPost]
         [ActionName("Delete")]
-        public async Task<IActionResult> ConfirmDelete(int? orderId)
+        public async Task<IActionResult> ConfirmDelete(int? id)
         {
-            if (orderId != null)
+            if (id != null)
             {
-                var order = await db.Orders.FirstOrDefaultAsync(p => p.OrderId == orderId);
-                if (order != null)
+                var player = await db.Players.FirstOrDefaultAsync(p => p.Id == id);
+                if (player != null)
                 {
-                    db.Orders.Remove(order);
+                    db.Players.Remove(player);
                     await db.SaveChangesAsync();
-                    return RedirectToAction("Orders");
+                    return RedirectToAction("Index");
                 }
             }
             return NotFound();
@@ -81,30 +87,56 @@ namespace FootballersCatalogue.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
+            Debug.WriteLine("Edit");
+            Debug.WriteLine(id);
+
             if (id != null)
             {
-                var order = await db.Orders.FirstOrDefaultAsync(p => p.OrderId == id);
-                if (order != null)
-                    return View(order);
+                ViewData["Teams"] = db.Teams.ToList();
+                Debug.WriteLine(db.Teams.ToList().Count);
+                var player = await db.Players.FirstOrDefaultAsync(p => p.Id == id);
+                if (player != null)
+                {
+                    return View(player);
+                }
+                    
             }
             return NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Order order)
+        public async Task<IActionResult> Edit(Player player)
         {
-            
-            db.Orders.Update(order);
+            Debug.WriteLine("Register post");
+
+            if (!db.Teams.Where(team => team.Name.Equals(player.TeamName)).Any())
+            {
+                Debug.WriteLine("Created team");
+                db.Teams.Add(new Team(player.TeamName));
+                db.SaveChanges();
+            }
+
+            var playerTeam = db.Teams.Where(team => team.Name.Equals(player.TeamName)).FirstOrDefault();
+            player.TeamId = playerTeam.TeamId;
+            player.Team = playerTeam;
+
+            db.Players.Update(player);
             await db.SaveChangesAsync();
-            return RedirectToAction("Orders");
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult GetTeamsDatalist()
         {
-            Debug.WriteLine(db.Orders.Count());
-            Debug.WriteLine("GetTeams");
-            return PartialView(db.Orders.ToList());
+            Debug.WriteLine("GetTeamsDatalist");
+            return PartialView(db.Teams.ToList());
+        }
+
+        [HttpGet]
+        public IActionResult GetTeamName()
+        {
+            Debug.WriteLine("GetTeamName");
+            return PartialView();
         }
     }
 }
