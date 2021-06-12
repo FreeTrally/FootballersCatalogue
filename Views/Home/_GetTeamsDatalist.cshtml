@@ -1,0 +1,10 @@
+﻿@model IEnumerable<string>
+<datalist id="datalistOptions">
+    @foreach (var contactPhone in Model)
+    {
+        <option value="@contactPhone"></option>
+    }
+
+</datalist>
+
+

@@ -1,0 +1,31 @@
+﻿@model FootballersCatalogue.Models.Order
+@{
+    ViewData["Title"] = "Удаление заказа";
+}
+<div>
+    <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>
+            @Html.DisplayFor(model => model.User)
+        </dd>
+
+        <dt>Address</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>Phone</dt>
+        <dd>
+            @Html.DisplayFor(model => model.ContactPhone)
+        </dd>
+    </dl>
+
+    <div>
+        <form asp-controller="Home" asp-action="Delete" method="post">
+            <div class="form-group">
+                <input type="hidden" value="@ViewBag.OrderId" name="OrderId" />
+                <input type="submit" class="btn btn-default" value="Удалить" />
+            </div>
+        </form>
+    </div>
+</div>

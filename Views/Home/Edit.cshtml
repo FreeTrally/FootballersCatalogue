@@ -1,0 +1,23 @@
+﻿@model FootballersCatalogue.Models.Order
+@{
+    ViewData["Title"] = "Редактирование заказа";
+}
+<form asp-action="edit" asp-controller="home" asp-route-id="@Model.OrderId">
+    <div class="form-group">
+        <label asp-for="User" class="control-label">Имя</label>
+        <input type="text" asp-for="User" class="form-control" required/>
+        <input type="hidden" value="@Model.PhoneId" name="PhoneId" />
+        <input type="hidden" value="@Model.OrderId" name="OrderId" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Address" class="control-label">Адрес</label>
+        <input type="text" asp-for="Address" class="form-control" required/>
+    </div>
+    <div class="form-group">
+        <label asp-for="ContactPhone" class="control-label">Телефон</label>
+        <input type="text" asp-for="ContactPhone" class="form-control" required/>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Сохранить" class="btn btn-default" />
+    </div>
+</form>

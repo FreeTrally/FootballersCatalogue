@@ -1,0 +1,24 @@
+﻿@model IEnumerable<FootballersCatalogue.Models.Order>
+@{
+    ViewData["Title"] = "Заказы";
+}
+<h3>Оформленные заказы</h3>
+<table class="table-condensed">
+    <tr>
+        <td>Имя заказчика</td>
+        <td>Адрес</td>
+        <td>Контактный телефон</td>
+        <td>Редактировать заказ</td>
+        <td>Удалить заказ</td>
+    </tr>
+    @foreach (var order in Model)
+    {
+<tr>
+    <td>@order.User</td>
+    <td>@order.Address</td>
+    <td>@order.ContactPhone</td>
+    <td><a href="~/Home/Edit/@order.OrderId">Редактировать</a></td>
+    <td><a href="~/Home/Delete/@order.OrderId">Удалить</a></td>
+</tr>
+    }
+</table>
