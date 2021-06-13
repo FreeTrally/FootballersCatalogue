@@ -133,11 +133,5 @@ namespace FootballersCatalogue.Controllers
         {
             return PartialView(db.Teams.ToList());
         }
-
-        [HttpGet]
-        public IActionResult GetTeamName()
-        {
-            return PartialView();
-        }
     }
 }
