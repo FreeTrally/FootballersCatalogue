@@ -41,21 +41,12 @@ namespace FootballersCatalogue.Controllers
         [ActionName("Register")]
         public async Task<IActionResult> AddNewPlayer(Player player)
         {
-            if (!db.Teams.Where(team => team.Name.Equals(player.TeamName)).Any())
-            {
-                db.Teams.Add(new Team(player.TeamName));
-                db.SaveChanges();
-            }
-                
-            var playerTeam = db.Teams.Where(team => team.Name.Equals(player.TeamName)).FirstOrDefault();
-            player.TeamId = playerTeam.TeamId;
-            player.Team = playerTeam;
+            SetPlayerTeamRegister(player);
             db.Players.Add(player);
-
             db.SaveChanges();
             await hub.Clients.All.SendAsync("RefreshTable", db.Players.ToList());
             return RedirectToAction("Index");
-        }
+        }      
 
         [HttpGet]
         public IActionResult Delete(int? id)
@@ -101,6 +92,34 @@ namespace FootballersCatalogue.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Player player)
         {
+            SetPlayerTeamEdit(player);
+            db.Players.Update(player);
+            await db.SaveChangesAsync();
+            await hub.Clients.All.SendAsync("RefreshTable", db.Players.ToList());
+            return RedirectToAction("Index");
+        }       
+
+        [HttpGet]
+        public IActionResult GetTeamsDatalist()
+        {
+            return PartialView(db.Teams.ToList());
+        }
+
+        private void SetPlayerTeamRegister(Player player)
+        {
+            if (!db.Teams.Where(team => team.Name.Equals(player.TeamName)).Any())
+            {
+                db.Teams.Add(new Team(player.TeamName));
+                db.SaveChanges();
+            }
+
+            var playerTeam = db.Teams.Where(team => team.Name.Equals(player.TeamName)).FirstOrDefault();
+            player.TeamId = playerTeam.TeamId;
+            player.Team = playerTeam;
+        }
+
+        private void SetPlayerTeamEdit(Player player)
+        {
             var playerTeam = db.Teams.Where(team => team.TeamId.Equals(player.TeamId)).FirstOrDefault();
 
             if (player.TeamName != null)
@@ -109,7 +128,7 @@ namespace FootballersCatalogue.Controllers
                 {
                     db.Teams.Add(new Team(player.TeamName));
                     db.SaveChanges();
-                }                  
+                }
                 playerTeam = db.Teams.Where(team => team.Name.Equals(player.TeamName)).FirstOrDefault();
                 player.TeamId = playerTeam.TeamId;
             }
@@ -117,17 +136,6 @@ namespace FootballersCatalogue.Controllers
                 player.TeamName = playerTeam.Name;
 
             player.Team = playerTeam;
-
-            db.Players.Update(player);
-            await db.SaveChangesAsync();
-            await hub.Clients.All.SendAsync("RefreshTable", db.Players.ToList());
-            return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public IActionResult GetTeamsDatalist()
-        {
-            return PartialView(db.Teams.ToList());
         }
     }
 }
