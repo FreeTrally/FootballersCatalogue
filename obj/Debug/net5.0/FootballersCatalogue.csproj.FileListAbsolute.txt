@@ -72,7 +72,6 @@ C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\Razor\V
 C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\Razor\Views\Home\Edit.cshtml.g.cs
 C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\Razor\Views\Home\_GetTeamsDatalist.cshtml.g.cs
 C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\Razor\Views\Home\Register.cshtml.g.cs
-C:\Users\Сергей\source\repos\FootballersCatalogue\obj\Debug\net5.0\Razor\Views\Home\_GetTeamName.cshtml.g.cs
 C:\Users\Сергей\source\repos\FootballersCatalogue\bin\Debug\net5.0\libman.json
 C:\Users\Сергей\source\repos\FootballersCatalogue\bin\Debug\net5.0\Humanizer.dll
 C:\Users\Сергей\source\repos\FootballersCatalogue\bin\Debug\net5.0\Microsoft.AspNetCore.Razor.Language.dll

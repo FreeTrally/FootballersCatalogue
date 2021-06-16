@@ -33,7 +33,8 @@ namespace FootballersCatalogue.Controllers
         [ActionName("Register")]
         public IActionResult AddNewPlayer()
         {
-            return View(db.Teams.ToList());
+            ViewData["Teams"] = db.Teams.ToList();
+            return View();
         }
 
         [HttpPost]
@@ -104,18 +105,13 @@ namespace FootballersCatalogue.Controllers
 
             if (player.TeamName != null)
             {
-                if (db.Teams.Where(team => team.Name.Equals(player.TeamName)).Any())
-                {
-                    playerTeam = db.Teams.Where(team => team.Name.Equals(player.TeamName)).FirstOrDefault();
-                    player.TeamId = playerTeam.TeamId;
-                }                  
-                else
+                if (!db.Teams.Where(team => team.Name.Equals(player.TeamName)).Any())
                 {
                     db.Teams.Add(new Team(player.TeamName));
                     db.SaveChanges();
-                    playerTeam = db.Teams.Where(team => team.Name.Equals(player.TeamName)).FirstOrDefault();
-                    player.TeamId = playerTeam.TeamId;
-                }             
+                }                  
+                playerTeam = db.Teams.Where(team => team.Name.Equals(player.TeamName)).FirstOrDefault();
+                player.TeamId = playerTeam.TeamId;
             }
             else
                 player.TeamName = playerTeam.Name;
