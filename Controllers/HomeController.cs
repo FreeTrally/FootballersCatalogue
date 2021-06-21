@@ -2,11 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,8 +9,8 @@ namespace FootballersCatalogue.Controllers
 {
     public class HomeController : Controller
     {
-        CatalogueContext db;
-        IHubContext<IndexHub> hub;
+        private CatalogueContext db;
+        private IHubContext<IndexHub> hub;
 
         public HomeController(CatalogueContext context, IHubContext<IndexHub> hubContext)
         {
@@ -27,6 +22,13 @@ namespace FootballersCatalogue.Controllers
         public IActionResult Index()
         {
             return View(db.Players.ToList());
+        }
+
+        [HttpGet]
+        [ActionName("Error")]
+        public IActionResult HandleError(int id)
+        {
+            return View(new ErrorViewModel() { RequestId = id.ToString() });
         }
 
         [HttpGet]
@@ -78,11 +80,10 @@ namespace FootballersCatalogue.Controllers
         {
             if (id != null)
             {
-                ViewData["Teams"] = db.Teams.ToList();
                 var player = await db.Players.FirstOrDefaultAsync(p => p.Id == id);
                 if (player != null)
                 {
-                    return View(player);
+                    return View(new EditViewModel(player, db.Teams.ToList()));
                 }
                     
             }
@@ -97,7 +98,7 @@ namespace FootballersCatalogue.Controllers
             await db.SaveChangesAsync();
             await hub.Clients.All.SendAsync("RefreshTable", db.Players.ToList());
             return RedirectToAction("Index");
-        }       
+        }
 
         [HttpGet]
         public IActionResult GetTeamsDatalist()

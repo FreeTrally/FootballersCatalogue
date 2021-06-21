@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Deleting footballer's card";
 }
-<h2>Footballer's card'</h2>
+<h2>Footballer's card</h2>
 <div>
     <dl class="dl-horizontal">
         <dt>Name</dt>
@@ -39,7 +39,7 @@
         <form asp-controller="Home" asp-action="Delete" method="post">
             <div class="form-group">
                 <input type="hidden" value="@ViewBag.PlayerId" name="Id" />
-                <input type="submit" class="btn btn-default" value="Delete" />
+                <input type="submit" class="btn btn-danger" value="Delete" />
             </div>
         </form>
     </div>

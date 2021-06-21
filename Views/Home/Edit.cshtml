@@ -1,46 +1,45 @@
-﻿@model FootballersCatalogue.Models.Player
+﻿@model FootballersCatalogue.Models.EditViewModel
 
 @{
     ViewData["Title"] = "Editing footballer's card";
-    IEnumerable<Team> teams = ViewData["Teams"] as IEnumerable<Team>;
 }
 <h2>Editing form</h2>
-<form asp-action="edit" asp-controller="home" asp-route-id="@Model.Id">
-    <input type="hidden" value="@Model.Id" name="Id" />
-    <input type="hidden" value="@Model.TeamId" name="TeamId" />
+<form asp-action="edit" asp-controller="home" asp-route-id="@Model.Player.Id">
+    <input type="hidden" value="@Model.Player.Id" name="Id" />
+    <input type="hidden" value="@Model.Player.TeamId" name="TeamId" />
     <div class="form-group">
-        <label asp-for="Name" class="control-label">Name</label>
-        <input type="text" asp-for="Name" class="form-control" required autocomplete="off" />
+        <label asp-for="Player.Name" class="control-label">Name</label>
+        <input type="text" asp-for="Player.Name" class="form-control" required autocomplete="off" />
     </div>
     <div class="form-group">
-        <label asp-for="Surname" class="control-label">Surname</label>
-        <input type="text" asp-for="Surname" class="form-control" required autocomplete="off" />
+        <label asp-for="Player.Surname" class="control-label">Surname</label>
+        <input type="text" asp-for="Player.Surname" class="form-control" required autocomplete="off" />
     </div>
     <div class="form-group">
-        <label asp-for="Gender" class="control-label">Gender</label>
-        <select name="Gender" asp-for="Gender" class="form-control" required>
+        <label asp-for="Player.Gender" class="control-label">Gender</label>
+        <select name="Gender" asp-for="Player.Gender" class="form-control" required>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
         </select>
     </div>
     <div class="form-group">
-        <label asp-for="BirthDate" class="control-label">Birth date</label>
-        <input type="date" asp-for="BirthDate" class="form-control" required />
+        <label asp-for="Player.BirthDate" class="control-label">Birth date</label>
+        <input type="date" asp-for="Player.BirthDate" class="form-control" required />
     </div>
     <div class="form-group">
-        <label asp-for="TeamName" class="control-label">Team</label>
-        <input class="form-control" name="TeamName" list="datalistOptions" placeholder="@Model.TeamName" autocomplete="off">
-        @await Html.PartialAsync("_GetTeamsDatalist", teams)
+        <label asp-for="Player.TeamName" class="control-label">Team</label>
+        <input class="form-control" name="TeamName" list="datalistOptions" placeholder="@Model.Player.TeamName" autocomplete="off">
+        @await Html.PartialAsync("_GetTeamsDatalist", Model.Teams)
     </div>
     <div class="form-group">
-        <label asp-for="Country" class="control-label">Country</label>
-        <select name="Country" asp-for="Country" class="form-control" required>
+        <label asp-for="Player.Country" class="control-label">Country</label>
+        <select name="Country" asp-for="Player.Country" class="form-control" required>
             <option value="Russia">Russia</option>
             <option value="USA">USA</option>
             <option value="Italy">Italy</option>
         </select>
     </div>
     <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-default" />
+        <input type="submit" value="Save" class="btn btn-success" />
     </div>
 </form>
