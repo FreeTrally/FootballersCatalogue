@@ -49,8 +49,8 @@
                 <td>` + players[i].birthDate + `</td>
                 <td>` + players[i].teamName + `</td>
                 <td>` + players[i].country + `</td>
-                <td><a href="Edit/` + players[i].id + `">Редактировать</a></td>
-                <td><a href="Delete/` + players[i].id + `">Удалить</a></td></tr>`;
+                <td><a href="Edit/` + players[i].id + `">Edit</a></td>
+                <td><a href="Delete/` + players[i].id + `">Delete</a></td></tr>`;
         }
     });
     hubConnection.start();
